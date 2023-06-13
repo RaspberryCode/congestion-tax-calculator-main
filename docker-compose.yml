@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=calculator
+      - POSTGRES_USER=calculator
+      - POSTGRES_DB=congestion-calculator
+    ports:
+      - "5436:5432"
+  app:
+    image: app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/congestion-calculator
+      - SPRING_DATASOURCE_USERNAME=calculator
+      - SPRING_DATASOURCE_PASSWORD=calculator
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
